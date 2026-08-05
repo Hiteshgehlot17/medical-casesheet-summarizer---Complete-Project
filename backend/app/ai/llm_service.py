@@ -8,6 +8,9 @@ from app.ai.prompt_templates import MEDICAL_SUMMARY_PROMPT
 
 load_dotenv()
 
+print("API Key Loaded:", os.getenv("GEMINI_API_KEY"))
+
+
 client = genai.Client(
     api_key=os.getenv("GEMINI_API_KEY")
 )

@@ -1,0 +1,26 @@
+import Sidebar from "./Sidebar";
+import Navbar from "./Navbar";
+
+function DashboardLayout({ children }) {
+  return (
+    <div className="flex">
+
+      <Sidebar />
+
+      <div className="flex-1 p-8 bg-slate-100 min-h-screen">
+
+        <Navbar />
+
+        <div className="mt-8">
+
+          {children}
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
+
+export default DashboardLayout;

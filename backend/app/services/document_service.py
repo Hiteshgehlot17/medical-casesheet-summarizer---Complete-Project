@@ -5,11 +5,11 @@ import json
 from app.ai.ocr_service import pdf_to_images, extract_text
 from app.ai.text_cleaner import clean_ocr_text
 from app.ai.llm_service import summarize_medical_text
+from app.ai.chunker import chunk_text
 
 UPLOAD_FOLDER = "uploads"
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
 
 def save_uploaded_file(file):
 
@@ -28,7 +28,6 @@ def save_uploaded_file(file):
 
     # Convert PDF to Images
     images = pdf_to_images(file_path)
-
     print(f"3. PDF converted to {len(images)} images")
 
     # OCR
@@ -53,8 +52,20 @@ def save_uploaded_file(file):
 
     print("5. OCR text saved")
 
-    # Gemini Summary
-    summary = summarize_medical_text(extracted_text)
+    # Split text into chunks
+    chunks = chunk_text(extracted_text)
+
+    print(f"Total Chunks: {len(chunks)}")
+
+    summaries = []
+
+    for i, chunk in enumerate(chunks):
+
+        print(f"Processing Chunk {i + 1}/{len(chunks)}")
+
+        chunk_summary = summarize_medical_text(chunk)
+
+        summaries.append(chunk_summary)
 
     print("6. Gemini summary completed")
 
@@ -65,7 +76,7 @@ def save_uploaded_file(file):
         encoding="utf-8"
     ) as f:
         json.dump(
-            summary,
+            summaries,
             f,
             indent=4,
             ensure_ascii=False
@@ -78,5 +89,6 @@ def save_uploaded_file(file):
         "message": "Medical Case Sheet Processed Successfully",
         "pages": len(images),
         "characters": len(extracted_text),
-        "summary": summary
+        "chunks": len(chunks),
+        "summary": summaries
     }
