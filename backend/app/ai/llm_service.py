@@ -24,13 +24,21 @@ def summarize_medical_text(text):
     print(prompt[:1000])
     print("\n============================\n")
 
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt
-    )
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt
+        )
 
-    print("\n========== GEMINI RESPONSE ==========\n")
-    print(response.text)
-    print("\n=====================================\n")
+        print("\n========== GEMINI RESPONSE ==========\n")
+        print(response.text)
+        print("\n=====================================\n")
 
-    return json.loads(response.text)
+        return json.loads(response.text)
+
+    except Exception as e:
+        print("\n========== GEMINI ERROR ==========\n")
+        print(e)
+        print("\n==================================\n")
+
+        raise
