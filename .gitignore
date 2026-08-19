@@ -56,4 +56,5 @@ dist/
 # ===============================
 # Jupyter
 # ===============================
-.ipynb_checkpoints/
+.ipynb_checkpoints/uploads/
+uploads/
