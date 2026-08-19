@@ -1,21 +1,27 @@
 import os
 import json
 import time
+from pathlib import Path
 
 from dotenv import load_dotenv
 from google import genai
 
-from app.ai.prompt_templates import MEDICAL_SUMMARY_PROMPT
+from backend.app.ai.prompt_templates import MEDICAL_SUMMARY_PROMPT
 
 
-load_dotenv()
+# Load backend/.env regardless of where the application is started
+BASE_DIR = Path(__file__).resolve().parents[2]
+load_dotenv(BASE_DIR / ".env")
 
+
+# Get Gemini API key
 api_key = os.getenv("GEMINI_API_KEY")
 
 if not api_key:
     raise RuntimeError("GEMINI_API_KEY is not configured")
 
 
+# Create Gemini client
 client = genai.Client(
     api_key=api_key
 )
@@ -77,7 +83,6 @@ def summarize_medical_text(text):
                     f"{error_text}"
                 )
 
-                # Retry only transient server/network errors
                 if (
                     "503" in error_text
                     or "UNAVAILABLE" in error_text
@@ -98,7 +103,6 @@ def summarize_medical_text(text):
 
                     continue
 
-                # JSON error
                 if isinstance(e, json.JSONDecodeError):
 
                     print(
@@ -107,7 +111,6 @@ def summarize_medical_text(text):
 
                     raise
 
-                # Other errors should not be retried
                 raise
 
     print(

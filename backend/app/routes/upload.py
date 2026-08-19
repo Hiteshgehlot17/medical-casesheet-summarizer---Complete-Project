@@ -1,6 +1,6 @@
 from fastapi import APIRouter, UploadFile, File
 
-from app.services.document_service import save_uploaded_file
+from backend.app.services.document_service import save_uploaded_file
 
 router = APIRouter()
 

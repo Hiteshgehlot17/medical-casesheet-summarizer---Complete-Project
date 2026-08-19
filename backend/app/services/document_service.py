@@ -2,10 +2,10 @@ import os
 import shutil
 import json
 
-from app.ai.ocr_service import pdf_to_images, extract_text
-from app.ai.text_cleaner import clean_ocr_text
-from app.ai.llm_service import summarize_medical_text
-from app.ai.chunker import chunk_text
+from backend.app.ai.ocr_service import pdf_to_images, extract_text
+from backend.app.ai.text_cleaner import clean_ocr_text
+from backend.app.ai.llm_service import summarize_medical_text
+from backend.app.ai.chunker import chunk_text
 
 UPLOAD_FOLDER = "uploads"
 
